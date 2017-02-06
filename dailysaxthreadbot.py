@@ -109,42 +109,61 @@ def reply_daily_sax_thread(submission):
     strsax = "S A X\n\nA\n\nX"
     strthread = "T H R E A D\n\nH\n\nR\n\nE\n\nA\n\nD"
     for top_comment in submission.comments:
+        #Booleans
+        found_daily = False
+        found_sax = False
+        found_thread = False
+
         daily = "D A I L Y"
+
         if daily in top_comment.body:
-            print(top_comment.body)
+            found_daily = True
             for next_comment in top_comment.replies:
                 sax = "S A X"
                 if sax in next_comment.body:
-                    print(next_comment.body)
+                    found_sax = True
+                    for next_next_comment in next_comment.replies:
+                        thread = "T H R E A D"
+                        if thread in next_next_comment.body:
+                            found_thread = True
+                        if found_thread:
+                            print("Found DAILY>SAX>THREAD!")
+                            break
+                    if not found_thread:
+                        print("FOUND DAILY>SAX. Need to reply THREAD.")
+                
+                if found_sax:
+                    break
+            if not found_sax:
+                print("Found DAILY. Need to reply SAX>THREAD.")
+        if found_daily:
+            break
+    if not found_daily:
+        print("Need to reply DAILY>SAX>THREAD")
+
+
 
 
 def main():
-    #Read the arguments (path to the client details)
-    #Login
-    #
-    #Get list of last 10 /r/india posts
     reddit = praw.Reddit('dailysaxthreadbot')
     subreddit = reddit.subreddit('india')
-    
-    print(reddit.user.me())
-    print(subreddit.display_name)
-    print(subreddit.title)
-    #print(subreddit.description)
-    print("*"*10)
-    for submission in subreddit.hot(limit=500):
+    post_limit = 1000
+    print("Retrieving top {} posts for {}.".format(post_limit, subreddit.title))
+    posts = subreddit.hot(limit=post_limit)
+    reply_counter = 0
+    for submission in posts:
         if check_submission(submission):
-            print(submission.title)
+            title = submission.title
+            created_t = submission.created_utc
+            created_dt = datetime.fromtimestamp(created_t)
+            message = "Replying to {}, posted at {}.".format(title, created_dt)
+            print(message)
+            reply_counter += 1
             reply_daily_sax_thread(submission)
-            
-            #created_t = submission.created_utc
-            #created_dt = datetime.fromtimestamp(created_t)
-            #now = datetime.now()
-            #time_elpsd = (now - created_dt).total_seconds()/60.0
-            #print("At {}, {} min. ago.".format(created_dt, time_elpsd))
-            #print(submission.id)
-            #print(submission.url)
             print("*")
+
     print("*"*10)
+    print("Replied to {} posts.".format(reply_counter))
     #print(dir(submission))
     
 
