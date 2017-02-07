@@ -115,27 +115,32 @@ def reply_daily_sax_thread(submission):
         found_thread = False
 
         daily = "D A I L Y"
-
+        poster_daily = None
+        poster_sax = None
+        poster_thread = None
         if daily in top_comment.body:
             found_daily = True
+            poster_daily = top_comment.author
             for next_comment in top_comment.replies:
                 sax = "S A X"
                 if sax in next_comment.body:
                     found_sax = True
+                    poster_sax = next_comment.author
                     for next_next_comment in next_comment.replies:
                         thread = "T H R E A D"
                         if thread in next_next_comment.body:
                             found_thread = True
+                            poster_thread = next_next_comment.author
                         if found_thread:
-                            print("Found DAILY>SAX>THREAD!")
+                            print("Found {}:DAILY>{}:SAX>{}:THREAD!".format(poster_daily, poster_sax, poster_thread))
                             break
                     if not found_thread:
-                        print("FOUND DAILY>SAX. Need to reply THREAD.")
+                        print("FOUND {}:DAILY>{}:SAX. Need to reply THREAD.".format(poster_daily, poster_sax))
                 
                 if found_sax:
                     break
             if not found_sax:
-                print("Found DAILY. Need to reply SAX>THREAD.")
+                print("Found {}:DAILY. Need to reply SAX>THREAD.".format(poster_daily)
         if found_daily:
             break
     if not found_daily:
