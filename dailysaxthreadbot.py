@@ -66,31 +66,32 @@ def check_submission(submission):
                     "dies",
                     "died", 
                     "medical", 
-                    "hospital"
-                ]
+                    "hospital", 
+                    "hospitalize", 
+                    "hospitalized"
+                    ]
+    #First, check if the words in the include list are present.
     for word in word_list:
         re_str = r"\b{}\b".format(word)
-
         title_valid = re.search(re_str, submission_title, re.I)
         if title_valid:
             valid = True
-            break
         else:
             text_valid = re.search(re_str, submission_text, re.I)
             if text_valid:
                 valid = True
-                break
-    
+        if valid:
+            break
     if valid:
-        #Ensure that the exclude is circumvented.
+        #Ensure that the words in the exclude list are not present.
         for word in exclude_list:
             re_str = r"\b{}\b".format(word)
             title_invld = re.search(re_str, submission_title, re.I)
             if title_invld:
                 valid = False
             else:
-                desc_invld = re.search(re_str, submission_text, re.I)
-                if desc_invld:
+                text_invld = re.search(re_str, submission_text, re.I)
+                if text_invld:
                     valid = False
     return valid
 
@@ -109,11 +110,10 @@ def reply_daily_sax_thread(submission):
     strsax = "S A X\n\nA\n\nX"
     strthread = "T H R E A D\n\nH\n\nR\n\nE\n\nA\n\nD"
     for top_comment in submission.comments:
-        #Booleans
+        #Keep track of whether or not these have already been posted.
         found_daily = False
         found_sax = False
         found_thread = False
-
         daily = "D A I L Y"
         poster_daily = None
         poster_sax = None
@@ -136,7 +136,6 @@ def reply_daily_sax_thread(submission):
                             break
                     if not found_thread:
                         print("FOUND {}:DAILY>{}:SAX. Need to reply THREAD.".format(poster_daily, poster_sax))
-                
                 if found_sax:
                     break
             if not found_sax:
@@ -144,14 +143,15 @@ def reply_daily_sax_thread(submission):
         if found_daily:
             break
     if not found_daily:
+        #Reply to the submission.
+        get_reply = submission.reply(strdaily)
         print("Need to reply DAILY>SAX>THREAD")
-
-
-
+        print(type(get_reply))
+        print(dir(get_reply))              
 
 def main():
     reddit = praw.Reddit('dailysaxthreadbot')
-    subreddit = reddit.subreddit('india')
+    subreddit = reddit.subreddit('dailysaxthreadbot') #use india later.
     post_limit = 1000
     print("Retrieving top {} posts for {}.".format(post_limit, subreddit.title))
     posts = subreddit.hot(limit=post_limit)
