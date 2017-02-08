@@ -109,6 +109,10 @@ def reply_daily_sax_thread(submission):
     strdaily = "D A I L Y\n\nA\n\nI\n\nL\n\nY"
     strsax = "S A X\n\nA\n\nX"
     strthread = "T H R E A D\n\nH\n\nR\n\nE\n\nA\n\nD"
+    found_daily = False
+    found_sax = False
+    found_thread = False
+    
     for top_comment in submission.comments:
         #Keep track of whether or not these have already been posted.
         found_daily = False
