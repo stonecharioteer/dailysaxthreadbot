@@ -55,6 +55,7 @@ def check_submission(submission):
                 "sex toys", "get laid",
                 "adult movies", "adult movie",
                 "blue film", "pornography",
+                "get laid","got laid", "getting laid",
                 "porn", "pr0n", "porno", "pedophile", 
                 "sexual", "rape"
                 ]
