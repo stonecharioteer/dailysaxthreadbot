@@ -95,6 +95,26 @@ def check_submission(submission):
                     valid = False
     return valid
 
+def reply_to_reddit(submission, message, wait=None):
+    '''
+        This function handles replies to the given submission.
+        There is a limit to how long a gap needs to be provided between replies
+        for bots/accounts with low rep. 
+        I should be able to guess how long this needs based on the error.
+    '''
+    if wait==None:
+        wait=False
+    try_to_reply = True
+    while try_to_reply:
+        try:
+            reply = submission.reply(message)
+            try_to_reply = False
+        except Exception as e:
+            reply = None
+            try_to_reply = True
+            raise e
+    return reply
+
 def reply_daily_sax_thread(submission):
     """
     First, check if there are these nested replies:
@@ -106,11 +126,15 @@ def reply_daily_sax_thread(submission):
         **** Contact /u/stonecharioteer if this breaks.
     Also, need to track if there's any need to reply in the first place.
     """
+    
     strdaily = "D A I L Y\n\nA\n\nI\n\nL\n\nY"
     strsax = "S A X\n\nA\n\nX"
     strthread = "T H R E A D\n\nH\n\nR\n\nE\n\nA\n\nD"
-    strsignature = "Courtesy dailysaxthreadbot. Contact /u/stonecharioteer if this breaks.\n\nTop keks guaranteed.\n\nInqilab Zindabad!"
+    strsignature = ("Courtesy dailysaxthreadbot. "
+                    "Contact /u/stonecharioteer if this breaks."
+                    "\n\nTop keks guaranteed.\n\nInqilab Zindabad!")
     strawdamn = "Aaw, you beat me to it. Too much free time, eh?"
+
     found_daily = False
     found_sax = False
     found_thread = False
@@ -144,38 +168,33 @@ def reply_daily_sax_thread(submission):
                             poster_thread = thread_comment.author
                             print("Found {}:DAILY>{}:SAX>{}:THREAD!".format(poster_daily, poster_sax, poster_thread))
                             if poster_thread != "dailysaxthreadbot":
-                                thread_comment.reply(strawdamn)
+                                reply_to_reddit(thread_comment, strawdamn, wait=True)
                             else:
-                                thread_comment.reply(strsignature)
+                                reply_to_reddit(thread_comment, strsignature, wait=True)
                             break
                     if not found_thread:
                         print("FOUND {}:DAILY>{}:SAX. Need to reply THREAD.".format(poster_daily, poster_sax))
-                        get_reply_thread = sax_comment.reply(strthread)
-                        time.sleep(60*9)
-                        get_reply_signature = get_reply_thread.reply(strsignature)
+                        get_reply_thread = reply_to_reddit(sax_comment, strthread, wait=True)
+                        get_reply_signature = reply_to_reddit(get_reply_thread, strsignature, wait=True)
                         
                 if found_sax:
                     break
             if not found_sax:
                 print("Found {}:DAILY. Need to reply SAX>THREAD.".format(poster_daily))
-                get_reply_sax = daily_comment.reply(strsax)
-                get_reply_thread = get_reply_sax.reply(strthread)
-                get_reply_signature = get_reply_thread.reply(strsignature)
+                get_reply_sax = reply_to_reddit(daily_comment, strsax, wait=True)
+                get_reply_thread = reply_to_reddit(get_reply_sax, strthread, wait=True)
+                get_reply_signature = reply_to_reddit(get_reply_thread, strsignature, wait=True)
                 
         if found_daily:
             break
     if not found_daily:
         #Reply to the submission.
         print("Replying DAILY>SAX>THREAD.")
-        get_reply_daily = submission.reply(strdaily)
-        #There's a limit on how much this bot can reply. Need to solve this.
-        time.sleep(60*9)
-        get_reply_sax = get_reply_daily.reply(strsax)
-        time.sleep(60*9)
-        get_reply_thread = get_reply_sax.reply(strthread)
-        time.sleep(60*9)
-        get_reply_signature = get_reply_thread.reply(strsignature)
-
+        get_reply_daily = reply_to_reddit(submission, strdaily, wait=True)
+        get_reply_sax = reply_to_reddit(get_reply_daily, strsax, wait=True)
+        get_reply_thread = reply_to_reddit(get_reply_sax, strthread, wait=True)
+        get_reply_signature = reply_to_reddit(get_reply_thread, strsignature, wait=True)
+        
 
 def main():
     reddit = praw.Reddit('dailysaxthreadbot')
