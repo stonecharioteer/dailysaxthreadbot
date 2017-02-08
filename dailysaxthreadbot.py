@@ -28,6 +28,7 @@ import json
 import argparse
 import time
 import re
+import string
 from datetime import datetime
 
 def check_submission(submission):
@@ -36,8 +37,10 @@ def check_submission(submission):
     
     """
     valid = False
-    submission_title = submission.title
-    submission_text = submission.selftext
+    pattern = r"[{}]".format(string.punctuation)
+
+    submission_title = re.sub(pattern, "", submission.title)
+    submission_text = re.sub(pattern, "", submission.selftext)
     #First version, hardcoded word list. 
     #Later put these into a file.
     word_list = [
@@ -142,7 +145,7 @@ def reply_daily_sax_thread(submission):
                     "Contact /u/stonecharioteer if this breaks."
                     "\n\nTop keks guaranteed.\n\nInqilab Zindabad!")
     strawdamn = ("topkek, bhai. You beat me to it.\n\n"
-                "Great job. So what are you doing with your other hand?\n\n?"
+                "Great job. So what are you doing with your other hand?\n\n"
                 "/u/stonecharioteer is proud of you. Now scream with me: SAAARE JAHAAN SE ACHCHA~~!")
 
     found_daily = False
