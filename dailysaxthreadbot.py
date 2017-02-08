@@ -139,7 +139,8 @@ def reply_daily_sax_thread(submission):
                 if found_sax:
                     break
             if not found_sax:
-                print("Found {}:DAILY. Need to reply SAX>THREAD.".format(poster_daily)
+                print("Found {}:DAILY. Need to reply SAX>THREAD.".format(poster_daily))
+                
         if found_daily:
             break
     if not found_daily:
