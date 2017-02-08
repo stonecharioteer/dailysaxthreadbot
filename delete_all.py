@@ -14,6 +14,6 @@ if __name__ == "__main__":
         counter+=1
         comment.delete()
         print("Deleted {} comments.".format(counter))
-
+        time.sleep(5)
     print("Done")
 
