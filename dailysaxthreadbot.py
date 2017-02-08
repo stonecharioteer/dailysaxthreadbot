@@ -148,6 +148,7 @@ def reply_daily_sax_thread(submission):
                     if not found_thread:
                         print("FOUND {}:DAILY>{}:SAX. Need to reply THREAD.".format(poster_daily, poster_sax))
                         get_reply_thread = sax_comment.reply(strthread)
+                        time.sleep(60*9)
                         get_reply_signature = get_reply_thread.reply(strsignature)
                         
                 if found_sax:
@@ -165,9 +166,11 @@ def reply_daily_sax_thread(submission):
         print("Replying DAILY>SAX>THREAD.")
         get_reply_daily = submission.reply(strdaily)
         #There's a limit on how much this bot can reply. Need to solve this.
-        #time.sleep(10)
+        time.sleep(60*9)
         get_reply_sax = get_reply_daily.reply(strsax)
+        time.sleep(60*9)
         get_reply_thread = get_reply_sax.reply(strthread)
+        time.sleep(60*9)
         get_reply_signature = get_reply_thread.reply(strsignature)
 
 
