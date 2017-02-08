@@ -109,6 +109,7 @@ def reply_daily_sax_thread(submission):
     strdaily = "D A I L Y\n\nA\n\nI\n\nL\n\nY"
     strsax = "S A X\n\nA\n\nX"
     strthread = "T H R E A D\n\nH\n\nR\n\nE\n\nA\n\nD"
+    strsignature = "Courtesy dailysaxthreadbot. Contact /u/stonecharioteer if this breaks.\n\nTop keks guaranteed.\n\nInqilab Zindabad!"
     found_daily = False
     found_sax = False
     found_thread = False
@@ -149,10 +150,13 @@ def reply_daily_sax_thread(submission):
             break
     if not found_daily:
         #Reply to the submission.
-        get_reply = submission.reply(strdaily)
-        print("Need to reply DAILY>SAX>THREAD")
-        print(type(get_reply))
-        print(dir(get_reply))              
+        get_reply_daily = submission.reply(strdaily)
+        #print("Need to reply DAILY>SAX>THREAD")
+        get_reply_sax = get_reply_daily.reply(strsax)
+        get_reply_thread = get_reply_sax.reply(strthread)
+        get_reply_signature = get_reply_thread.reply(strsignature)
+        #print(type(get_reply))
+        #print(dir(get_reply))              
 
 def main():
     reddit = praw.Reddit('dailysaxthreadbot')
