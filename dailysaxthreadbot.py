@@ -37,60 +37,64 @@ def check_submission(submission):
     
     """
     valid = False
-    pattern = r"[{}]".format(string.punctuation)
+    locked = submission.locked
+    if locked:
+        valid = False
+    else:
+        pattern = r"[{}]".format(string.punctuation)
 
-    submission_title = re.sub(pattern, "", submission.title)
-    submission_text = re.sub(pattern, "", submission.selftext)
-    #First version, hardcoded word list. 
-    #Later put these into a file.
-    word_list = [
-                "sex", "sax","saxx","saxxx","saxxxx",
-                "girlfriend","boyfriend","pullout","ipill","contraceptive"
-                "marriage", "tinder","valentine",
-                "penis", "vagina",
-                "dick", "condom",
-                "pregnant", "anal",
-                "blowjob", "handjob",
-                "dildo", "vibrator",
-                "sex toys", "get laid",
-                "adult movies", "adult movie",
-                "blue film", "pornography",
-                "get laid","got laid", "getting laid",
-                "porn", "pr0n", "porno", "pedophile", 
-                "sexual", "rape"
-                ]
-    
-    #This needs an exclude list mainly because of the 
-    #sensitive posts that could exist.
-    exclude_list = [
-                    "death", "dies","rape",
-                    "died","murder","murdering","murdered","murders" 
-                    "medical", "abuse",
-                    "hospital", "hospitalize", "hospitalized"
+        submission_title = re.sub(pattern, "", submission.title)
+        submission_text = re.sub(pattern, "", submission.selftext)
+        #First version, hardcoded word list. 
+        #Later put these into a file.
+        word_list = [
+                    "sex", "sax","saxx","saxxx","saxxxx",
+                    "girlfriend","boyfriend","pullout","ipill","contraceptive"
+                    "marriage", "tinder","valentine",
+                    "penis", "vagina",
+                    "dick", "condom",
+                    "pregnant", "anal",
+                    "blowjob", "handjob",
+                    "dildo", "vibrator",
+                    "sex toys", "get laid",
+                    "adult movies", "adult movie",
+                    "blue film", "pornography",
+                    "get laid","got laid", "getting laid",
+                    "porn", "pr0n", "porno", "pedophile", 
+                    "sexual", "rape"
                     ]
-    #First, check if the words in the include list are present.
-    for word in word_list:
-        re_str = r"\b{}\b".format(word)
-        title_valid = re.search(re_str, submission_title, re.I)
-        if title_valid:
-            valid = True
-        else:
-            text_valid = re.search(re_str, submission_text, re.I)
-            if text_valid:
-                valid = True
-        if valid:
-            break
-    if valid:
-        #Ensure that the words in the exclude list are not present.
-        for word in exclude_list:
+        
+        #This needs an exclude list mainly because of the 
+        #sensitive posts that could exist.
+        exclude_list = [
+                        "death", "dies","rape",
+                        "died","murder","murdering","murdered","murders" 
+                        "medical", "abuse",
+                        "hospital", "hospitalize", "hospitalized"
+                        ]
+        #First, check if the words in the include list are present.
+        for word in word_list:
             re_str = r"\b{}\b".format(word)
-            title_invld = re.search(re_str, submission_title, re.I)
-            if title_invld:
-                valid = False
+            title_valid = re.search(re_str, submission_title, re.I)
+            if title_valid:
+                valid = True
             else:
-                text_invld = re.search(re_str, submission_text, re.I)
-                if text_invld:
+                text_valid = re.search(re_str, submission_text, re.I)
+                if text_valid:
+                    valid = True
+            if valid:
+                break
+        if valid:
+            #Ensure that the words in the exclude list are not present.
+            for word in exclude_list:
+                re_str = r"\b{}\b".format(word)
+                title_invld = re.search(re_str, submission_title, re.I)
+                if title_invld:
                     valid = False
+                else:
+                    text_invld = re.search(re_str, submission_text, re.I)
+                    if text_invld:
+                        valid = False
     return valid
 
 def reply_to_reddit(submission, message, wait=None):
