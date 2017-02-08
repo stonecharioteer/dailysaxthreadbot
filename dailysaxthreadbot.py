@@ -44,9 +44,9 @@ def check_submission(submission):
     #First version, hardcoded word list. 
     #Later put these into a file.
     word_list = [
-                "sex", "sax",
-                "girlfriend",
-                "marriage", "tinder",
+                "sex", "sax","saxx","saxxx","saxxxx",
+                "girlfriend","boyfriend","pullout","ipill","contraceptive"
+                "marriage", "tinder","valentine",
                 "penis", "vagina",
                 "dick", "condom",
                 "pregnant", "anal",
@@ -63,7 +63,7 @@ def check_submission(submission):
     #This needs an exclude list mainly because of the 
     #sensitive posts that could exist.
     exclude_list = [
-                    "death", "dies",
+                    "death", "dies","rape",
                     "died","murder","murdering","murdered","murders" 
                     "medical", "abuse",
                     "hospital", "hospitalize", "hospitalized"
@@ -203,9 +203,19 @@ def reply_daily_sax_thread(submission):
         get_reply_signature = reply_to_reddit(get_reply_thread, strsignature, wait=True)
         
 
+def delete_all():
+    reddit = praw.Reddit('dailysaxthreadbot')
+    user = reddit.get_redditor('dailysaxthreadbot')
+    counter = 0
+    for comment in user.get_comments(limit=1000):
+        comment.delete()
+        counter += 1
+    print("{} comments by me deleted.".format(counter))
+
 def main():
     reddit = praw.Reddit('dailysaxthreadbot')
-    subreddit = reddit.subreddit('dailysaxthreadbot') #use india later.
+
+    subreddit = reddit.subreddit('india')#dailysaxthreadbot')
     post_limit = 1000
     print("Retrieving top {} posts for {}.".format(post_limit, subreddit.title))
     posts = subreddit.hot(limit=post_limit)
@@ -228,5 +238,6 @@ def main():
 
     
 if __name__ == "__main__":
-    main()
+    #main()
+    delete_all()
 
