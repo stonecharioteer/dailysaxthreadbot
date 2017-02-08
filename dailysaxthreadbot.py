@@ -164,6 +164,8 @@ def reply_daily_sax_thread(submission):
         #Reply to the submission.
         print("Replying DAILY>SAX>THREAD.")
         get_reply_daily = submission.reply(strdaily)
+        #There's a limit on how much this bot can reply. Need to solve this.
+        #time.sleep(10)
         get_reply_sax = get_reply_daily.reply(strsax)
         get_reply_thread = get_reply_sax.reply(strthread)
         get_reply_signature = get_reply_thread.reply(strsignature)
