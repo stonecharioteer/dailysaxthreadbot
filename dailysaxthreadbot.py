@@ -56,7 +56,15 @@ def check_submission(submission):
                 "handjob",
                 "dildo",
                 "vibrator",
-                "sex toys"
+                "sex toys",
+                "get laid",
+                "adult movies",
+                "adult movie",
+                "blue film",
+                "pornography",
+                "porn",
+                "pr0n", "porno", "pedophile", "sexual",
+                "rape"
                 ]
     
     #This needs an exclude list mainly because of the 
