@@ -222,7 +222,7 @@ def delete_all():
 def main():
     reddit = praw.Reddit('dailysaxthreadbot')
     subreddit = reddit.subreddit('india')#dailysaxthreadbot')
-    post_limit = 1000
+    post_limit = 25
     print("Retrieving top {} posts for {}.".format(post_limit, subreddit.title))
     posts = subreddit.hot(limit=post_limit)
     reply_counter = 0
@@ -244,6 +244,7 @@ def main():
 
     
 if __name__ == "__main__":
+    
     print(datetime.now())
     main()
     #delete_all()
