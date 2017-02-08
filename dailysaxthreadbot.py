@@ -109,7 +109,7 @@ def reply_to_reddit(submission, message, wait=None):
     try_to_reply = True
     while try_to_reply:
         try:
-            #reply = submission.reply(message)
+            reply = submission.reply(message)
             try_to_reply = False
         except Exception as e:
             reply = None
