@@ -141,7 +141,9 @@ def reply_daily_sax_thread(submission):
     strsignature = ("Courtesy dailysaxthreadbot. "
                     "Contact /u/stonecharioteer if this breaks."
                     "\n\nTop keks guaranteed.\n\nInqilab Zindabad!")
-    strawdamn = "Aaw, you beat me to it. Too much free time, eh?"
+    strawdamn = ("topkek, bhai. You beat me to it.\n\n"
+                "Great job. So what are you doing with your other hand?\n\n?"
+                "/u/stonecharioteer is proud of you. Now scream with me: SAAARE JAHAAN SE ACHCHA~~!")
 
     found_daily = False
     found_sax = False
