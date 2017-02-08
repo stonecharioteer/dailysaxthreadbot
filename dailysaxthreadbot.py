@@ -6,15 +6,15 @@ Developed by StoneCharioteer, as a gag.
 Designed to run on /r/india to reply with the 
 
 '''
-D A I L Y
+    D A I L Y
 
-A
+    A
 
-I
+    I
 
-L
+    L
 
-Y
+    Y
 '''
 etc. posts to all posts containing sexual content.
 
@@ -143,7 +143,10 @@ def reply_daily_sax_thread(submission):
                             thread_comment = next_next_comment
                             poster_thread = thread_comment.author
                             print("Found {}:DAILY>{}:SAX>{}:THREAD!".format(poster_daily, poster_sax, poster_thread))
-                            thread_comment.reply(strawdamn)
+                            if poster_thread != "dailysaxthreadbot":
+                                thread_comment.reply(strawdamn)
+                            else:
+                                thread_comment.reply(strsignature)
                             break
                     if not found_thread:
                         print("FOUND {}:DAILY>{}:SAX. Need to reply THREAD.".format(poster_daily, poster_sax))
