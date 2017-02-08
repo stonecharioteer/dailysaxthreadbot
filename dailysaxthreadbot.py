@@ -36,6 +36,7 @@ def check_submission(submission):
     Checks a reddit submission to see if it's about sax.
     
     """
+    print("Inspecting {}".format(submission.title))
     valid = False
     locked = submission.locked
     if locked:
@@ -53,7 +54,7 @@ def check_submission(submission):
                     "marriage", "tinder","valentine",
                     "penis", "vagina",
                     "dick", "condom",
-                    "pregnant", "anal",
+                    "pregnant", "anal","kiss",
                     "blowjob", "handjob",
                     "dildo", "vibrator",
                     "sex toys", "get laid",
@@ -95,6 +96,7 @@ def check_submission(submission):
                     text_invld = re.search(re_str, submission_text, re.I)
                     if text_invld:
                         valid = False
+    print("Valid for Sax? {}".format(valid))
     return valid
 
 def reply_to_reddit(submission, message, wait=None):
@@ -224,7 +226,7 @@ def main():
     subreddit = reddit.subreddit('india')#dailysaxthreadbot')
     post_limit = 25
     print("Retrieving top {} posts for {}.".format(post_limit, subreddit.title))
-    posts = subreddit.hot(limit=post_limit)
+    posts = subreddit.new(limit=post_limit)
     reply_counter = 0
     for submission in posts:
         if check_submission(submission):
