@@ -167,10 +167,17 @@ def reply_daily_sax_thread(submission):
                             thread_comment = next_next_comment
                             poster_thread = thread_comment.author
                             print("Found {}:DAILY>{}:SAX>{}:THREAD!".format(poster_daily, poster_sax, poster_thread))
-                            if poster_thread != "dailysaxthreadbot":
-                                reply_to_reddit(thread_comment, strawdamn, wait=True)
-                            else:
-                                reply_to_reddit(thread_comment, strsignature, wait=True)
+                            #Check if the bot has replied to the comment with a signature
+                            #or the awdamn message already.
+                            replied_sig = False
+                            for further_comment in thread_comment.replies:
+                                if further_comment.author == "dailysaxthreadbot":
+                                    replied_sig = True
+                            if not replied_sig:
+                                if poster_thread != "dailysaxthreadbot":
+                                    reply_to_reddit(thread_comment, strawdamn, wait=True)
+                                else:
+                                    reply_to_reddit(thread_comment, strsignature, wait=True)
                             break
                     if not found_thread:
                         print("FOUND {}:DAILY>{}:SAX. Need to reply THREAD.".format(poster_daily, poster_sax))
