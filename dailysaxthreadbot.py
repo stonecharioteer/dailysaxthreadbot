@@ -44,42 +44,28 @@ def check_submission(submission):
     #First version, hardcoded word list. 
     #Later put these into a file.
     word_list = [
-                "sex",
-                "sax",
+                "sex", "sax",
                 "girlfriend",
-                "marriage",
-                "tinder",
-                "penis",
-                "vagina",
-                "dick",
-                "condom",
-                "pregnant",
-                "anal",
-                "blowjob",
-                "handjob",
-                "dildo",
-                "vibrator",
-                "sex toys",
-                "get laid",
-                "adult movies",
-                "adult movie",
-                "blue film",
-                "pornography",
-                "porn",
-                "pr0n", "porno", "pedophile", "sexual",
-                "rape"
+                "marriage", "tinder",
+                "penis", "vagina",
+                "dick", "condom",
+                "pregnant", "anal",
+                "blowjob", "handjob",
+                "dildo", "vibrator",
+                "sex toys", "get laid",
+                "adult movies", "adult movie",
+                "blue film", "pornography",
+                "porn", "pr0n", "porno", "pedophile", 
+                "sexual", "rape"
                 ]
     
     #This needs an exclude list mainly because of the 
     #sensitive posts that could exist.
     exclude_list = [
-                    "death",
-                    "dies",
-                    "died", 
-                    "medical", 
-                    "hospital", 
-                    "hospitalize", 
-                    "hospitalized"
+                    "death", "dies",
+                    "died","murder","murdering","murdered","murders" 
+                    "medical", "abuse",
+                    "hospital", "hospitalize", "hospitalized"
                     ]
     #First, check if the words in the include list are present.
     for word in word_list:
