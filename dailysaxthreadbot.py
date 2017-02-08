@@ -110,6 +110,7 @@ def reply_daily_sax_thread(submission):
     strsax = "S A X\n\nA\n\nX"
     strthread = "T H R E A D\n\nH\n\nR\n\nE\n\nA\n\nD"
     strsignature = "Courtesy dailysaxthreadbot. Contact /u/stonecharioteer if this breaks.\n\nTop keks guaranteed.\n\nInqilab Zindabad!"
+    strawdamn = "Aaw, you beat me to it. Too much free time, eh?"
     found_daily = False
     found_sax = False
     found_thread = False
@@ -125,38 +126,48 @@ def reply_daily_sax_thread(submission):
         poster_thread = None
         if daily in top_comment.body:
             found_daily = True
-            poster_daily = top_comment.author
+            daily_comment = top_comment
+            poster_daily = daily_comment.author
+            sax_comment = None
+            
             for next_comment in top_comment.replies:
                 sax = "S A X"
                 if sax in next_comment.body:
                     found_sax = True
-                    poster_sax = next_comment.author
-                    for next_next_comment in next_comment.replies:
+                    sax_comment = next_comment
+                    poster_sax = sax_comment.author
+                    for next_next_comment in sax_comment.replies:
                         thread = "T H R E A D"
                         if thread in next_next_comment.body:
                             found_thread = True
-                            poster_thread = next_next_comment.author
-                        if found_thread:
+                            thread_comment = next_next_comment
+                            poster_thread = thread_comment.author
                             print("Found {}:DAILY>{}:SAX>{}:THREAD!".format(poster_daily, poster_sax, poster_thread))
+                            thread_comment.reply(strawdamn)
                             break
                     if not found_thread:
                         print("FOUND {}:DAILY>{}:SAX. Need to reply THREAD.".format(poster_daily, poster_sax))
+                        get_reply_thread = sax_comment.reply(strthread)
+                        get_reply_signature = get_reply_thread.reply(strsignature)
+                        
                 if found_sax:
                     break
             if not found_sax:
                 print("Found {}:DAILY. Need to reply SAX>THREAD.".format(poster_daily))
+                get_reply_sax = daily_comment.reply(strsax)
+                get_reply_thread = get_reply_sax.reply(strthread)
+                get_reply_signature = get_reply_thread.reply(strsignature)
                 
         if found_daily:
             break
     if not found_daily:
         #Reply to the submission.
+        print("Replying DAILY>SAX>THREAD.")
         get_reply_daily = submission.reply(strdaily)
-        #print("Need to reply DAILY>SAX>THREAD")
         get_reply_sax = get_reply_daily.reply(strsax)
         get_reply_thread = get_reply_sax.reply(strthread)
         get_reply_signature = get_reply_thread.reply(strsignature)
-        #print(type(get_reply))
-        #print(dir(get_reply))              
+
 
 def main():
     reddit = praw.Reddit('dailysaxthreadbot')
