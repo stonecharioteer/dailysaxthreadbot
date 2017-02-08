@@ -205,16 +205,18 @@ def reply_daily_sax_thread(submission):
 
 def delete_all():
     reddit = praw.Reddit('dailysaxthreadbot')
-    user = reddit.get_redditor('dailysaxthreadbot')
+    #subreddit = reddit.subreddit(subreddit)
+    user = reddit.redditor('dailysaxthreadbot')
     counter = 0
-    for comment in user.get_comments(limit=1000):
+    for comment in user.comments.new(limit=1000):
         comment.delete()
         counter += 1
+        print("Deleted a comment.")
+        time.sleep(10)
     print("{} comments by me deleted.".format(counter))
 
 def main():
     reddit = praw.Reddit('dailysaxthreadbot')
-
     subreddit = reddit.subreddit('india')#dailysaxthreadbot')
     post_limit = 1000
     print("Retrieving top {} posts for {}.".format(post_limit, subreddit.title))
@@ -238,6 +240,7 @@ def main():
 
     
 if __name__ == "__main__":
-    #main()
-    delete_all()
+    print(datetime.now())
+    main()
+    #delete_all()
 
